@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA Notification</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <h1>Just to test pwa</h1>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.2.0/firebase-app.js'
+        import { getMessaging, getToken, onMessage } from 'https://www.gstatic.com/firebasejs/9.2.0/firebase-messaging.js'
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC5RwVvxpCagyA_9_Lyi3JnhXa75x1XK40",
+            authDomain: "do00w1l5.firebaseapp.com",
+            projectId: "do00w1l5",
+            storageBucket: "do00w1l5.appspot.com",
+            messagingSenderId: "876062738663",
+            appId: "1:876062738663:web:c5ebe35706e3275cfc7a42",
+            measurementId: "G-YD1027JVEH"
+        };
+
+        const app = initializeApp(firebaseConfig);
+
+        const messaging = getMessaging(app);
+
+        onMessage(messaging, payload => console.log('Get Payload:', payload));
+
+        navigator.serviceWorker.register('firebase-messaging-sw.js')
+            .then(newSW => {
+                const vapidKey = "BOoD4CMtcP1N-qwYxdnKI18MljrdRLaGIy7JmRCIyuBdVDuz7iMwiBt56eQiWjZ0a36SknYYcwcVnT0KCRVWqSE";
+                getToken(messaging, { vapidKey, serviceWorkerRegistration:newSW })
+                    .then(console.log)
+                    .catch(console.error);
+            })
+            .catch(console.error);
+    </script>
+    <script src="service-worker.js"></script>
+</body>
+</html>
