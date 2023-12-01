@@ -2,8 +2,8 @@
 self.addEventListener('push', (event) => {
     const options = {
         body: event.data.text(),
-        icon: '/icon.png',
-        badge: '/badge.png', // Optional
+        icon: 'icon.png',
+        // badge: '/badge.png', // Optional
     };
 
     event.waitUntil(
@@ -15,10 +15,10 @@ self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open('simple-pwa-v1').then((cache) => {
             return cache.addAll([
-                '/',
-                '/index.html',
-                '/manifest.json',
-                '/icon.png',
+                // '/',
+                // '/index.html',
+                // '/manifest.json',
+                // '/icon.png',
             ]);
         })
     );
