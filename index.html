@@ -30,7 +30,13 @@
 
         const messaging = getMessaging(app);
 
-        onMessage(messaging, payload => console.log('Get Payload:', payload));
+        onMessage(messaging, message => {
+            console.log('Get Payload:', message);
+            new Notification(
+                message.notification.title,
+                {body:message.notification.body}
+            );
+        });
 
         navigator.serviceWorker.register('firebase-messaging-sw.js')
             .then(newSW => {
