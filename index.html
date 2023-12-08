@@ -8,9 +8,38 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
     <link rel="manifest" href="manifest.json">
+
+    <script>
+        function notify() {
+            var n = new Notification("Title", {
+                body: "lorem ipsum",
+                actions: [
+                    {action:"open", title: "Open"},
+                    {action:"close", title: "Close"}
+                ]
+            })
+
+            n.onclick = function (event) {
+                if (event.action === "open") {
+                    alert("Opening...");
+                    // Add your logic for the "Open" action here
+                } else if (event.action === "close") {
+                    alert("Dismissing...");
+                    // Add your logic for the "Dismiss" action here
+                } else {
+                    alert("Clicked on the notification body");
+                    // Add your logic for a click on the notification body here
+                }
+            }
+
+        }
+    </script>
+
 </head>
 <body>
     <h1>Just to test pwa</h1>
+    <p id="token"></p>
+    <button onClick="notify()"> Notify </button>
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.2.0/firebase-app.js'
@@ -27,21 +56,49 @@
         };
 
         const app = initializeApp(firebaseConfig);
+        const msg = getMessaging(app);
 
-        const messaging = getMessaging(app);
-
-        onMessage(messaging, message => {
+        onMessage(msg, message => {
             console.log('Get Payload:', message);
-            new Notification(
-                message.notification.title,
-                {body:message.notification.body}
+            console.log("title", message.data.title)
+            console.log("body", message.data.body)
+            var notification = new Notification(
+                message.data.title,
+                {
+                    body:message.data.body,
+                    actions: [{
+                        title: "Open",
+                        action: "open"
+                    }, {
+                        title: "Dismiss",
+                        action: "dismiss"
+                    }]
+                }
             );
+
+            notification.onclick = function (event) {
+                if (event.action === "open") {
+                    alert("Opening...");
+                    // Add your logic for the "Open" action here
+                } else if (event.action === "dismiss") {
+                    alert("Dismissing...");
+                    // Add your logic for the "Dismiss" action here
+                } else {
+                    alert("Clicked on the notification body");
+                    // Add your logic for a click on the notification body here
+                }
+            }
+
         });
 
         navigator.serviceWorker.register('firebase-messaging-sw.js')
             .then(newSW => {
                 const vapidKey = "BOoD4CMtcP1N-qwYxdnKI18MljrdRLaGIy7JmRCIyuBdVDuz7iMwiBt56eQiWjZ0a36SknYYcwcVnT0KCRVWqSE";
-                getToken(messaging, { vapidKey, serviceWorkerRegistration:newSW })
+                getToken(msg, { vapidKey, serviceWorkerRegistration:newSW })
+                    .then(token => {
+                        document.getElementById('token').innerHTML = token;
+                        return token;
+                    })
                     .then(console.log)
                     .catch(console.error);
             })
