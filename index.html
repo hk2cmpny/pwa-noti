@@ -12,26 +12,8 @@
     <script>
         function notify() {
             var n = new Notification("Title", {
-                body: "lorem ipsum",
-                actions: [
-                    {action:"open", title: "Open"},
-                    {action:"close", title: "Close"}
-                ]
+                body: "lorem ipsum"
             })
-
-            n.onclick = function (event) {
-                if (event.action === "open") {
-                    alert("Opening...");
-                    // Add your logic for the "Open" action here
-                } else if (event.action === "close") {
-                    alert("Dismissing...");
-                    // Add your logic for the "Dismiss" action here
-                } else {
-                    alert("Clicked on the notification body");
-                    // Add your logic for a click on the notification body here
-                }
-            }
-
         }
     </script>
 
@@ -65,27 +47,9 @@
             var notification = new Notification(
                 message.data.title,
                 {
-                    body:message.data.body,
-                    actions: [
-                        { title: "Open", action: "open"},
-                        { title: "Dismiss", action: "dismiss"}
-                    ]
+                    body:message.data.body
                 }
             );
-
-            notification.onclick = function (event) {
-                if (event.action === "open") {
-                    alert("Opening...");
-                    // Add your logic for the "Open" action here
-                } else if (event.action === "dismiss") {
-                    alert("Dismissing...");
-                    // Add your logic for the "Dismiss" action here
-                } else {
-                    alert("Clicked on the notification body");
-                    // Add your logic for a click on the notification body here
-                }
-            }
-
         });
 
         navigator.serviceWorker.register('firebase-messaging-sw.js')
