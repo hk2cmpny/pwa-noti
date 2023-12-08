@@ -66,13 +66,10 @@
                 message.data.title,
                 {
                     body:message.data.body,
-                    actions: [{
-                        title: "Open",
-                        action: "open"
-                    }, {
-                        title: "Dismiss",
-                        action: "dismiss"
-                    }]
+                    actions: [
+                        { title: "Open", action: "open"},
+                        { title: "Dismiss", action: "dismiss"}
+                    ]
                 }
             );
 
